@@ -48,19 +48,20 @@ app.use(BodyParser.urlencoded({ extended: true }));
 
 // Rutas
 
-//Crear usuario
+
+// Usuarios
+
+// Crear usuario
 app.post("/api/user", async (request, response) => {
-    console.log("Intentando registrar un nuevo usuario ", request.body)
     try {
         var user = new UserModel(request.body);
         var result = await user.save();
-        console.log("El resultado es ", result, " - ", user)
         response.send(result);
     } catch (error) {
         response.status(500).send(error);
     }
 });
-//Buscar usuario por username
+// Buscar usuario por username
 app.get("/api/user/:user_name", async (request, response) => {
     try {
         var result = await UserModel.findOne({"user_name":request.params.user_name}).exec();
@@ -69,7 +70,7 @@ app.get("/api/user/:user_name", async (request, response) => {
         response.status(500).send(error);
     }
 });
-//Actualizar usuario por username
+// Actualizar usuario por username
 app.put("/api/user/:user_name", async (request, response) => {
     try {
         var u = await UserModel.findOne({"user_name":request.params.user_name}).exec();
@@ -86,7 +87,7 @@ app.put("/api/user/:user_name", async (request, response) => {
         response.status(500).send(error);
     }
 });
-//Buscar usuario por correo
+// Buscar usuario por correo
 app.get("/api/user/email/:email", async (request, response) => {
     try {
         var result = await UserModel.findOne({"email":request.params.email}).exec();
@@ -95,7 +96,7 @@ app.get("/api/user/email/:email", async (request, response) => {
         response.status(500).send(error);
     }
 });
-//Borrar usuario
+// Borrar usuario
 app.delete("/api/user/:user_name", async (request, response) => {
     console.log("Borrando: ", request.params.user_name)
     try {
@@ -106,13 +107,10 @@ app.delete("/api/user/:user_name", async (request, response) => {
     }
 });
 
-//Login
+// Login
 app.post('/api/auth/login',function(req,res){
-    console.log("Intentando autenticar")
     UserModel.findOne({user_name:req.body.user_name}).then((user)=>{
-            console.log("Autenticando1 ", req.body, user)
             user.comparePassword(req.body.password,(err,isMatch)=>{
-                console.log("Autenticando2 ", isMatch)
                 if(isMatch){
                     var token=jwt.sign({userId:user.id},key.tokenKey);
                     res.status(200).json({
@@ -130,7 +128,7 @@ app.post('/api/auth/login',function(req,res){
         res.status(400).json({message:'Invalid Password/Username'});
     })
 })
-//Logout
+// Logout
 app.get("/api/auth/logout", async (request, response) => {
     try {
         var result = await UserModel.findOne({"user_name":request.params.user_name}).exec();
@@ -166,6 +164,23 @@ app.get("/api/user/:user_name", async (request, response) => {
         response.status(500).send(error);
     }
 });
+
+
+
+// Roles
+
+// Crear rol
+app.post("/api/rol", async (request, response) => {
+    try {
+        var user = new RolModel(request.body);
+        var result = await user.save();
+        response.send(result);
+    } catch (error) {
+        response.status(500).send(error);
+    }
+});
+
+
 
 
 // Servidor

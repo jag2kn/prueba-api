@@ -7,10 +7,10 @@ var bcrypt = require('bcryptjs')
 
 var userSchema = new Mongoose.Schema({
     name: String,
-    user_name: {type:String,unique:true},
+    user_name: {type:String/*,unique:true*/},
     email: String,
     password: String,
-    active: Boolean,
+    active: Boolean,    
 },{timestamps:true})
 
 
