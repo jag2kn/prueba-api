@@ -15,4 +15,17 @@ Funcionalidades implementadas
  * (10%) Consultar permiso de usuario : Crear una función que reciba dos parámetros: nombre de usuario (user_name en tabla USER)  url (url en tabla PERMISSION) .    Y determine si el usuario dado tiene un permiso con ese url, retornando true o false 
 
 
+# Despliegue
+
+Instalación de paquetes
+
+```bash
+npm i
+```
+
+Ejecución proyecto
+```bash
+npm start
+```
+
 
