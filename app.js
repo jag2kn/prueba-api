@@ -108,8 +108,11 @@ app.delete("/api/user/:user_name", async (request, response) => {
 
 //Login
 app.post('/api/auth/login',function(req,res){
-    UserModel.findOne({email:req.body.user_name}).then((user)=>{
+    console.log("Intentando autenticar")
+    UserModel.findOne({user_name:req.body.user_name}).then((user)=>{
+            console.log("Autenticando1 ", req.body, user)
             user.comparePassword(req.body.password,(err,isMatch)=>{
+                console.log("Autenticando2 ", isMatch)
                 if(isMatch){
                     var token=jwt.sign({userId:user.id},key.tokenKey);
                     res.status(200).json({
