@@ -6,8 +6,8 @@ Funcionalidades implementadas
 
 
  * ```POST /api/user``` Crear usuario: Función para la creación de un usuario con los campos indicados en el modelo de datos. El id idealmente debe ser autogenerado. 
- * ```GET "/api/user/:user_name``` ```GET "/api/user/email/:user_name``` Buscar usuario: Función que realice la búsqueda de un usuario con base  al nombre de usuario ó el correo electrónico.(user_name ó email).
- * ```PUT "/api/user/:user_name``` Modificar usuario:  Función para la modificación de un usuario con los campos indicados en el modelo de datos. 
+ * ```GET /api/user/:user_name``` ```GET /api/user/email/:user_name``` Buscar usuario: Función que realice la búsqueda de un usuario con base  al nombre de usuario ó el correo electrónico.(user_name ó email).
+ * ```PUT /api/user/:user_name``` Modificar usuario:  Función para la modificación de un usuario con los campos indicados en el modelo de datos. 
  * ```DELETE /api/user/:user_name``` Eliminar  usuario:  Función para la eliminación de un usuario por nombre de usuario (user_name). 
  * ```POST /api/auth/login``` Implementar login y logout: Implementar método para autenticar un usuario contra la base de datos con su nombre de usuario y contraseña (user_name y password). El método debe retornar true si las credenciales son correctas y false en caso contrario.
  * ```GET /api/user/roles/:user_name``` Consultar roles de usuario: Búsqueda de roles de un usuario específica por su nombre de usuario. (user_name) 
