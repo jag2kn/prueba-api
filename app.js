@@ -45,6 +45,12 @@ app.use(function(req,res,next){
 })
 app.use(BodyParser.urlencoded({ extended: true }));
 
+// Funciones auxiliares
+
+//Relacionar roles con los de la base de datos
+
+
+
 
 // Rutas
 
@@ -55,6 +61,18 @@ app.use(BodyParser.urlencoded({ extended: true }));
 app.post("/api/user", async (request, response) => {
     try {
         var user = new UserModel(request.body);
+        //user.roles = updateRoles(user.roles)
+        
+        let rs = request.body.roles;
+        for(let i=0;i<rs.length;i++){
+          try {
+            let result = await RolModel.findOne({"role_name":rs[i]}).exec();
+            //Pendiente ver si es valido
+            u.roles.push(result)
+          }catch(error){
+            console.log(error)
+          }
+        }
         var result = await user.save();
         response.send(result);
     } catch (error) {
@@ -80,10 +98,24 @@ app.put("/api/user/:user_name", async (request, response) => {
         u.email = user.email;
         u.password = user.password;
         u.active = user.active;
-        var result = await u.save();
+        u.roles = []
         
+        let rs = request.body.roles;
+        for(let i=0;i<rs.length;i++){
+          try {
+            let result = await RolModel.findOne({"role_name":rs[i]}).exec();
+            //Pendiente ver si es valido
+            u.roles.push(result)
+          }catch(error){
+            console.log(error)
+          }
+        }
+        
+        var result = await u.save();
+        console.log(result)
         response.send(result);
     } catch (error) {
+        console.log("Error: ", error)
         response.status(500).send(error);
     }
 });
@@ -172,13 +204,50 @@ app.get("/api/user/:user_name", async (request, response) => {
 // Crear rol
 app.post("/api/rol", async (request, response) => {
     try {
-        var user = new RolModel(request.body);
-        var result = await user.save();
+        var rol = new RolModel(request.body);
+        var result = await rol.save();
         response.send(result);
     } catch (error) {
         response.status(500).send(error);
     }
 });
+
+// Lista de Roles
+app.get("/api/rol", async (request, response) => {
+    try {
+        var result = await RolModel.find({});
+        response.send(result);
+    } catch (error) {
+        response.status(500).send(error);
+    }
+});
+
+
+
+
+// Permisos
+
+// Crear permiso
+app.post("/api/permission", async (request, response) => {
+    try {
+        var permission = new PermissionModel(request.body);
+        var result = await permission.save();
+        response.send(result);
+    } catch (error) {
+        response.status(500).send(error);
+    }
+});
+
+// Lista de permisos
+app.get("/api/permission", async (request, response) => {
+    try {
+        var result = await PermissionModel.find({});
+        response.send(result);
+    } catch (error) {
+        response.status(500).send(error);
+    }
+});
+
 
 
 

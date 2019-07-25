@@ -69,6 +69,21 @@ curl -X PUT http://localhost:3000/api/user/otro \
 }'
 ```
 
+
+### Modificar usuario asignando roles
+```bash
+curl -X PUT http://localhost:3000/api/user/otro \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "name": "Otro Perez",
+    "user_name": "otro",
+    "email": "otroperez@gmail.com",
+    "password": "12345678",
+    "active": false,
+    "roles": ["Usuario"]
+}'
+```
+
 ### Borrar usuario
 ```bash
 curl -X DELETE http://localhost:3000/api/user/otro
@@ -84,19 +99,82 @@ curl -X POST http://localhost:3000/api/auth/login \
 }'
 ```
 
+## Permisos
+
+### Crear permiso
+```bash
+curl -X POST http://localhost:3000/api/permission \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "permission_name": "Sumar",
+    "description": "Permiso para que el usuario pueda sumar",
+    "url": "/sumar",
+    "active": true
+}'
+
+curl -X POST http://localhost:3000/api/permission \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "permission_name": "Restar",
+    "description": "Permiso para que el usuario pueda restar",
+    "url": "/restar",
+    "active": true
+}'
+
+curl -X POST http://localhost:3000/api/permission \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "permission_name": "Multiplicar",
+    "description": "Permiso para que el usuario pueda multiplicar",
+    "url": "/multiplicar",
+    "active": true
+}'
+
+curl -X POST http://localhost:3000/api/permission \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "permission_name": "Dividir",
+    "description": "Permiso para que el usuario pueda dividir",
+    "url": "/dividir",
+    "active": true
+}'
+```
+### Lista de permission
+```bash
+curl -X GET http://localhost:3000/api/permission 
+```
 
 ## Roles
 
 ### Crear rol
+
+
+
 ```bash
 curl -X POST http://localhost:3000/api/rol \
   -H 'Content-Type: application/json' \
   -d '{
     "role_name": "Usuario",
     "description": "Usuarios del sistema",
-    "active": true
+    "active": true,
+    "permissions": []
+}'
+
+curl -X POST http://localhost:3000/api/rol \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "role_name": "Administrador",
+    "description": "Administradores del sistema",
+    "active": true,
+    "permissions": []
 }'
 ```
+
+### Lista de roles
+```bash
+curl -X GET http://localhost:3000/api/rol 
+```
+
 
 
  * (10%) Consultar roles de usuario: Búsqueda de roles de un usuario específica por su nombre de usuario. (user_name) 
