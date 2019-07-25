@@ -202,7 +202,7 @@ app.get("/api/user/permissions/:user_name/:url", async (request, response) => {
             let resultP = await PermissionModel.find({'_id': { $in: rs[i].permissions }}).exec();
             for(let j=0;j<resultP.length;j++){
               if (resultP[j].url===request.params.url){
-                response.send(true);
+                return response.send(true);
               }
             }
           }catch(error){
