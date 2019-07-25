@@ -8,5 +8,5 @@ module.exports = RolModel = Mongoose.model("rol", {
     role_name: String,
     description: String,
     active: Boolean,
-    permissions: [{ type : Mongoose.Schema.ObjectId, ref: 'PermissionModel' }]
+    permissions: [{ type : Mongoose.Schema.ObjectId, ref: 'permission' }]
 });

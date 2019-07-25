@@ -60,15 +60,18 @@ app.use(BodyParser.urlencoded({ extended: true }));
 // Crear usuario
 app.post("/api/user", async (request, response) => {
     try {
-        var user = new UserModel(request.body);
-        //user.roles = updateRoles(user.roles)
+    
+        let rs = request.body.roles
+        let body = request.body
+        delete body.roles
         
-        let rs = request.body.roles;
+        var user = new UserModel(body);
+        
         for(let i=0;i<rs.length;i++){
           try {
             let result = await RolModel.findOne({"role_name":rs[i]}).exec();
             //Pendiente ver si es valido
-            u.roles.push(result)
+            user.roles.push(result)
           }catch(error){
             console.log(error)
           }
@@ -169,29 +172,44 @@ app.get("/api/auth/logout", async (request, response) => {
         response.status(500).send(error);
     }
 });
+
 //Roles usuario
 app.get("/api/user/roles/:user_name", async (request, response) => {
     try {
-        var result = await UserModel.findOne({"user_name":request.params.user_name}).exec();
-        response.send(result);
+        var result = await UserModel.findOne({"user_name":request.params.user_name}).populate('roles').exec();
+        response.send(result.roles);
     } catch (error) {
         response.status(500).send(error);
     }
 });
 //Permisos Rol
-app.get("/api/user/:user_name", async (request, response) => {
+app.get("/api/rol/permission/:rol_name", async (request, response) => {
     try {
-        var result = await UserModel.findOne({"user_name":request.params.user_name}).exec();
+        console.log("Evaluando /api/rol/permission/", request.params.rol_name)
+        var result = await RolModel.findOne({"role_name":request.params.rol_name}).populate('permissions').exec();
         response.send(result);
     } catch (error) {
         response.status(500).send(error);
     }
 });
 //Permisos Usuario
-app.get("/api/user/:user_name", async (request, response) => {
+app.get("/api/user/permissions/:user_name/:url", async (request, response) => {
     try {
-        var result = await UserModel.findOne({"user_name":request.params.user_name}).exec();
-        response.send(result);
+        var result = await UserModel.findOne({"user_name":request.params.user_name}).populate('roles').exec();  
+        let rs = result.roles;
+        for(let i=0;i<rs.length;i++){
+          try {
+            let resultP = await PermissionModel.find({'_id': { $in: rs[i].permissions }}).exec();
+            for(let j=0;j<resultP.length;j++){
+              if (resultP[j].url===request.params.url){
+                response.send(true);
+              }
+            }
+          }catch(error){
+            console.log(error)
+          }
+        }
+        response.send(false);
     } catch (error) {
         response.status(500).send(error);
     }
@@ -205,6 +223,17 @@ app.get("/api/user/:user_name", async (request, response) => {
 app.post("/api/rol", async (request, response) => {
     try {
         var rol = new RolModel(request.body);
+        rol.permissions = []
+        let ps = request.body.permissions;
+        for(let i=0;i<ps.length;i++){
+          try {
+            let result = await PermissionModel.findOne({"permission_name":ps[i]}).exec();
+            //Pendiente ver si es valido
+            rol.permissions.push(result)
+          }catch(error){
+            console.log(error)
+          }
+        }
         var result = await rol.save();
         response.send(result);
     } catch (error) {
@@ -247,6 +276,7 @@ app.get("/api/permission", async (request, response) => {
         response.status(500).send(error);
     }
 });
+
 
 
 

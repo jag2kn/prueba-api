@@ -45,6 +45,23 @@ curl -X POST http://localhost:3000/api/user \
 }'
 ```
 
+### Crear usuario con rol
+
+Nota: Se deben crear los roles y permisos primero para que todo funcione correctamente
+
+```bash
+curl -X POST http://localhost:3000/api/user \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "name": "otro",
+    "user_name": "otro",
+    "email": "otro@gmail.com",
+    "password": "123456",
+    "active": true,
+    "roles": ["Usuario"]
+}'
+```
+
 
 ### Buscar usuario por user_name
 ```bash
@@ -79,8 +96,18 @@ curl -X PUT http://localhost:3000/api/user/otro \
     "user_name": "otro",
     "email": "otroperez@gmail.com",
     "password": "12345678",
-    "active": false,
+    "active": true,
     "roles": ["Usuario"]
+}'
+curl -X PUT http://localhost:3000/api/user/otro \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "name": "Admin Perez",
+    "user_name": "admin",
+    "email": "admin@gmail.com",
+    "password": "12345678",
+    "active": true,
+    "roles": ["Administrador"]
 }'
 ```
 
@@ -108,7 +135,7 @@ curl -X POST http://localhost:3000/api/permission \
   -d '{
     "permission_name": "Sumar",
     "description": "Permiso para que el usuario pueda sumar",
-    "url": "/sumar",
+    "url": "sumar",
     "active": true
 }'
 
@@ -117,7 +144,7 @@ curl -X POST http://localhost:3000/api/permission \
   -d '{
     "permission_name": "Restar",
     "description": "Permiso para que el usuario pueda restar",
-    "url": "/restar",
+    "url": "restar",
     "active": true
 }'
 
@@ -126,7 +153,7 @@ curl -X POST http://localhost:3000/api/permission \
   -d '{
     "permission_name": "Multiplicar",
     "description": "Permiso para que el usuario pueda multiplicar",
-    "url": "/multiplicar",
+    "url": "multiplicar",
     "active": true
 }'
 
@@ -135,7 +162,7 @@ curl -X POST http://localhost:3000/api/permission \
   -d '{
     "permission_name": "Dividir",
     "description": "Permiso para que el usuario pueda dividir",
-    "url": "/dividir",
+    "url": "dividir",
     "active": true
 }'
 ```
@@ -157,7 +184,7 @@ curl -X POST http://localhost:3000/api/rol \
     "role_name": "Usuario",
     "description": "Usuarios del sistema",
     "active": true,
-    "permissions": []
+    "permissions": ["Sumar", "Restar"]
 }'
 
 curl -X POST http://localhost:3000/api/rol \
@@ -166,7 +193,7 @@ curl -X POST http://localhost:3000/api/rol \
     "role_name": "Administrador",
     "description": "Administradores del sistema",
     "active": true,
-    "permissions": []
+    "permissions": ["Sumar", "Restar", "Multiplicar", "Dividir"]
 }'
 ```
 
@@ -176,6 +203,25 @@ curl -X GET http://localhost:3000/api/rol
 ```
 
 
+## Permisos implementados
+
+### Consultar roles de usuario
+```bash
+curl -X GET http://localhost:3000/api/user/roles/otro
+```
+### Consultar permisos de rol
+```bash
+curl -X GET http://localhost:3000/api/rol/permission/Usuario
+curl -X GET http://localhost:3000/api/rol/permission/Administrador
+```
+
+### Consultar permiso de usuario
+```bash
+curl -X GET http://localhost:3000/api/user/permissions/otro/sumar
+curl -X GET http://localhost:3000/api/user/permissions/otro/restar
+curl -X GET http://localhost:3000/api/user/permissions/otro/multiplicar
+curl -X GET http://localhost:3000/api/user/permissions/otro/dividir
+```
 
  * (10%) Consultar roles de usuario: Búsqueda de roles de un usuario específica por su nombre de usuario. (user_name) 
  * (10%) Consultar permisos de rol: Búsqueda de permisos de un rol por el nombre del rol (role_name). 

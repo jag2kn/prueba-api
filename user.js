@@ -13,7 +13,7 @@ var userSchema = new Mongoose.Schema({
     email: String,
     password: String,
     active: Boolean,
-    roles: [{ type : Mongoose.Schema.ObjectId, ref: 'RolModel' }]    
+    roles: [{ type : Mongoose.Schema.ObjectId, ref: 'rol' }]    
 },{timestamps:true})
 
 
