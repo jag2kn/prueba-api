@@ -19,13 +19,11 @@ var userSchema = new Mongoose.Schema({
 
 userSchema.pre('save', function (next) {
     var user = this;
-    if (user.isModified('password')) {
-      bcrypt.hash(user.password,10).then((hashedPassword) => {
-          user.password = hashedPassword;
-          next();
-      })
-    };
-    next();
+    if (!user.isModified('password')) {return next()};
+    bcrypt.hash(user.password,10).then((hashedPassword) => {
+        user.password = hashedPassword;
+        next();
+    })
 }, function (err) {
     next(err)
 })
