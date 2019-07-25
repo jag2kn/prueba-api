@@ -61,6 +61,19 @@ curl -X POST http://localhost:3000/api/user \
     "active": true,
     "roles": ["Usuario"]
 }'
+
+
+curl -X POST http://localhost:3000/api/user \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "name": "Admin Perez",
+    "user_name": "admin",
+    "email": "admin@gmail.com",
+    "password": "12345678",
+    "active": true,
+    "roles": ["Administrador"]
+}'
+
 ```
 
 
